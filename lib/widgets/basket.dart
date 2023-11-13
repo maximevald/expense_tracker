@@ -36,7 +36,7 @@ class _BasketState extends State<Basket> {
     }
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
         child: Column(
           children: [
             const Text('Removed'),

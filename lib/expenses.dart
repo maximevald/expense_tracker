@@ -1,3 +1,4 @@
+import 'package:expense_tracker/data/hive_database.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widgets/basket.dart';
 import 'package:expense_tracker/widgets/chart/chart.dart';
@@ -15,15 +16,16 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  final List<Expense> _registeredExpenses = [
-    Expense(
-      title: 'Course',
-      amount: 13.99,
-      date: DateTime.now(),
-      category: Category.work,
-    )
-  ];
+  List<Expense> _registeredExpenses = [];
   final List<Expense> _basket = [];
+
+  //Show saved expenses from box in InitState below
+  final db = HiveDataBase();
+  void prepareData() {
+    if (db.readData().isNotEmpty) {
+      _registeredExpenses = db.readData();
+    }
+  }
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
@@ -38,6 +40,7 @@ class _ExpensesState extends State<Expenses> {
     setState(() {
       _registeredExpenses.insert(0, expense);
     });
+    db.saveData(_registeredExpenses);
   }
 
   void _removeExpense(Expense expense) {
@@ -46,6 +49,7 @@ class _ExpensesState extends State<Expenses> {
       _registeredExpenses.remove(expense);
       _addToBasket(expense);
     });
+    db.saveData(_registeredExpenses);
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -58,6 +62,7 @@ class _ExpensesState extends State<Expenses> {
                 _registeredExpenses.insert(expenseIndex, expense);
                 _basket.remove(expense);
               });
+              db.saveData(_registeredExpenses);
             }),
       ),
     );
@@ -91,11 +96,35 @@ class _ExpensesState extends State<Expenses> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    prepareData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    Widget mainContent = const Center(
-      child: Text('No expenses found'),
+    Widget mainContent = Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'No expenses found',
+            style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).colorScheme.onPrimaryContainer),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'tap + to add',
+            style: TextStyle(
+                fontSize: 18,
+                color: Theme.of(context).colorScheme.onPrimaryContainer),
+          )
+        ],
+      ),
     );
 
     if (_registeredExpenses.isNotEmpty) {
