@@ -7,9 +7,9 @@ final DateFormat formatter = DateFormat('dd/MM/yyyy');
 // final formatter = DateFormat.yMd();
 
 enum Category {
-  work,
-  transport,
   food,
+  transport,
+  work,
   leisure,
   water,
   rent,
