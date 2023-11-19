@@ -49,6 +49,7 @@ class _ExpensesState extends State<Expenses> {
       _registeredExpenses.remove(expense);
       _addToBasket(expense);
     });
+    db.deleteData(expense);
     db.saveData(_registeredExpenses);
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -56,14 +57,15 @@ class _ExpensesState extends State<Expenses> {
         content: Text('Expense «${expense.title}» removed'),
         duration: const Duration(seconds: 3),
         action: SnackBarAction(
-            label: 'Undo',
-            onPressed: () {
-              setState(() {
-                _registeredExpenses.insert(expenseIndex, expense);
-                _basket.remove(expense);
-              });
-              db.saveData(_registeredExpenses);
-            }),
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _registeredExpenses.insert(expenseIndex, expense);
+              _basket.remove(expense);
+            });
+            db.saveData(_registeredExpenses);
+          },
+        ),
       ),
     );
   }
@@ -98,7 +100,6 @@ class _ExpensesState extends State<Expenses> {
   @override
   void initState() {
     super.initState();
-
     prepareData();
   }
 
@@ -113,16 +114,18 @@ class _ExpensesState extends State<Expenses> {
           Text(
             'No expenses found',
             style: TextStyle(
-                fontSize: 20,
-                color: Theme.of(context).colorScheme.onPrimaryContainer),
+              fontSize: 20,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             'tap + to add',
             style: TextStyle(
-                fontSize: 18,
-                color: Theme.of(context).colorScheme.onPrimaryContainer),
-          )
+              fontSize: 18,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
         ],
       ),
     );
@@ -145,7 +148,7 @@ class _ExpensesState extends State<Expenses> {
           IconButton(
             onPressed: _openBasket,
             icon: const Icon(Icons.delete),
-          )
+          ),
         ],
       ),
       body: width < 600

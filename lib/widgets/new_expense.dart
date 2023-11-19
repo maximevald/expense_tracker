@@ -2,7 +2,7 @@ import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key, required this.onAddExpense});
+  const NewExpense({required this.onAddExpense, super.key});
   final void Function(Expense expense) onAddExpense;
 
   @override
@@ -16,8 +16,8 @@ class _NewExpenseState extends State<NewExpense> {
   DateTime? _selectedDate;
   Category _selectedCategory = Category.food;
 
-  void _presentDatePicker() async {
-    final DateTime now = DateTime.now();
+  Future<void> _presentDatePicker() async {
+    final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
 
     final pickedDate = await showDatePicker(
@@ -38,10 +38,11 @@ class _NewExpenseState extends State<NewExpense> {
 
       widget.onAddExpense(
         Expense(
-            title: _enteredTitle,
-            amount: double.tryParse(_enteredAmount)!,
-            date: _selectedDate!,
-            category: _selectedCategory),
+          title: _enteredTitle,
+          amount: double.tryParse(_enteredAmount)!,
+          date: _selectedDate!,
+          category: _selectedCategory,
+        ),
       );
       Navigator.pop(context);
     }
@@ -81,7 +82,7 @@ class _NewExpenseState extends State<NewExpense> {
               children: [
                 Expanded(
                   child: TextFormField(
-                    initialValue: _enteredAmount.toString(),
+                    initialValue: _enteredAmount,
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       label: Text('Amount'),
@@ -102,21 +103,24 @@ class _NewExpenseState extends State<NewExpense> {
                   ),
                 ),
                 Expanded(
-                    child: GestureDetector(
-                  onTap: _presentDatePicker,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(_selectedDate == null
-                          ? 'Select a date'
-                          : formatter.format(_selectedDate!)),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const Icon(Icons.calendar_month),
-                    ],
+                  child: GestureDetector(
+                    onTap: _presentDatePicker,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          _selectedDate == null
+                              ? 'Select a date'
+                              : formatter.format(_selectedDate!),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Icon(Icons.calendar_month),
+                      ],
+                    ),
                   ),
-                ))
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -168,9 +172,9 @@ class _NewExpenseState extends State<NewExpense> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
-            )
+            ),
           ],
         ),
       ),

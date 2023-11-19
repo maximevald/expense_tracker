@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
   const ChartBar({
-    super.key,
     required this.fill,
     required this.percent,
+    super.key,
   });
 
   final double fill;
@@ -21,7 +21,6 @@ class ChartBar extends StatelessWidget {
           heightFactor: fill,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(8)),
               color: isDarkMode
@@ -32,9 +31,10 @@ class ChartBar extends StatelessWidget {
               child: Text(
                 '$percent%',
                 style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: Color.fromARGB(255, 229, 218, 255)),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                  color: Color.fromARGB(255, 229, 218, 255),
+                ),
               ),
             ),
           ),

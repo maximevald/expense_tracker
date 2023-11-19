@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
-var kColorScheme = ColorScheme.fromSeed(
-  brightness: Brightness.light,
+ColorScheme kColorScheme = ColorScheme.fromSeed(
   seedColor: const Color.fromARGB(255, 96, 59, 181),
 );
 
-var kDarkColorScheme = ColorScheme.fromSeed(
+ColorScheme kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
   seedColor: const Color.fromARGB(255, 5, 99, 125),
 );
 
 class AppTheme {
   static ThemeData darkTheme = ThemeData.dark().copyWith(
-    useMaterial3: true,
     colorScheme: kDarkColorScheme,
     appBarTheme: const AppBarTheme().copyWith(
       backgroundColor: kDarkColorScheme.onPrimaryContainer,
@@ -32,22 +30,24 @@ class AppTheme {
     ),
     textTheme: ThemeData().textTheme.copyWith(
           titleLarge: TextStyle(
-              fontWeight: FontWeight.normal,
-              color: kDarkColorScheme.onSecondaryContainer,
-              fontSize: 20),
+            fontWeight: FontWeight.normal,
+            color: kDarkColorScheme.onSecondaryContainer,
+            fontSize: 20,
+          ),
           titleMedium: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: kDarkColorScheme.onSecondaryContainer,
-              fontSize: 18),
+            fontWeight: FontWeight.bold,
+            color: kDarkColorScheme.onSecondaryContainer,
+            fontSize: 18,
+          ),
           labelLarge: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: kDarkColorScheme.onSecondaryContainer,
-              fontSize: 18),
+            fontWeight: FontWeight.bold,
+            color: kDarkColorScheme.onSecondaryContainer,
+            fontSize: 18,
+          ),
         ),
   );
 
   static ThemeData commonTheme = ThemeData().copyWith(
-    useMaterial3: true,
     colorScheme: kColorScheme,
     appBarTheme: const AppBarTheme().copyWith(
       backgroundColor: kColorScheme.onPrimaryContainer,
@@ -64,9 +64,10 @@ class AppTheme {
     ),
     textTheme: ThemeData().textTheme.copyWith(
           titleLarge: TextStyle(
-              fontWeight: FontWeight.normal,
-              color: kColorScheme.onSecondaryContainer,
-              fontSize: 20),
+            fontWeight: FontWeight.normal,
+            color: kColorScheme.onSecondaryContainer,
+            fontSize: 20,
+          ),
         ),
   );
 }

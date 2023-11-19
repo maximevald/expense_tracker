@@ -32,7 +32,8 @@ class Expense {
     required this.amount,
     required this.date,
     required this.category,
-  }) : id = uuid.v4();
+    String? id,
+  }) : id = id ?? uuid.v4();
 
   final String id;
   final String title;
@@ -47,19 +48,18 @@ class Expense {
 
 class ExpenseBucket {
   ExpenseBucket({required this.category, required this.expenses});
-
-  final Category category;
-  final List<Expense> expenses;
-
   ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
       : expenses = allExpenses
             .where((expense) => expense.category == category)
             .toList();
 
+  final Category category;
+  final List<Expense> expenses;
+
   double get totalExpenses {
     double sum = 0;
 
-    for (Expense expense in expenses) {
+    for (final expense in expenses) {
       sum += expense.amount;
     }
 
@@ -74,7 +74,7 @@ class AllExpensesAmount {
   double get allAmount {
     double totalAmount = 0;
 
-    for (Expense expense in expenses) {
+    for (final expense in expenses) {
       totalAmount += expense.amount;
     }
 

@@ -3,49 +3,58 @@ import 'package:hive/hive.dart';
 
 class HiveDataBase {
   //reference our box
-  final _myBox = Hive.box("expense_database");
+  static late final Box<Map<dynamic, dynamic>> _myBox;
 
-  // void remove() {
-  //   _myBox.deleteFromDisk();
-  // }
+  static Future<void> remove() async {
+    await Hive.deleteBoxFromDisk('expense_database');
+  }
 
   //write data
-  void saveData(List<Expense> allExpense) {
-    List<List<dynamic>> allExpensesFormatted = [];
-
-    for (var expense in allExpense) {
-      List<dynamic> expenseFormatted = [
-        expense.title,
-        expense.amount,
-        expense.category.name,
-        expense.date,
-      ];
-      allExpensesFormatted.add(expenseFormatted);
+  Future<void> saveData(List<Expense> allExpense) async {
+    for (final expense in allExpense) {
+      final expenseFormatted = {
+        'id': expense.id,
+        'title': expense.title,
+        'amount': expense.amount,
+        'category': expense.category.name,
+        'date': expense.date,
+      };
+      await _myBox.put(expense.id, expenseFormatted);
+      
     }
-    _myBox.put("ALL_EXPENSES", allExpensesFormatted);
+  }
+
+  void deleteData(Expense expense) {
+    _myBox.delete(expense.id);
   }
 
   //read data
   List<Expense> readData() {
-    List savedExpenses = _myBox.get("ALL_EXPENSES") ?? [];
-    List<Expense> allExpenses = [];
+    final savedExpenses = _myBox.values;
+    final allExpenses = <Expense>[];
 
-    for (int i = 0; i < savedExpenses.length; i++) {
-      // String id = savedExpenses[i][0];
-      String title = savedExpenses[i][0];
-      double amount = savedExpenses[i][1];
-      String category = savedExpenses[i][2];
-      DateTime dateTime = savedExpenses[i][3];
+    for (final expenseJSON in savedExpenses) {
+      final id = expenseJSON['id'];
+      final title = expenseJSON['title'];
+      final amount = expenseJSON['amount'];
+      final category = expenseJSON['category'];
+      final dateTime = expenseJSON['date'];
 
-      Expense expense = Expense(
-        title: title,
-        amount: amount,
-        date: dateTime,
-        category: Category.values.byName(category),
+      final expense = Expense(
+        id: id as String,
+        title: title as String,
+        amount: amount as double,
+        date: dateTime as DateTime,
+        category: Category.values.byName(category as String),
       );
 
       allExpenses.add(expense);
     }
     return allExpenses;
+  }
+
+  static Future<void> init() async {
+    await Hive.openBox<Map<dynamic, dynamic>>('expense_database');
+    _myBox = Hive.box<Map<dynamic, dynamic>>('expense_database');
   }
 }

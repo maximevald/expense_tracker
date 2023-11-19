@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 class Basket extends StatefulWidget {
   const Basket({
-    super.key,
     required this.onAddBasket,
     required this.basketList,
     required this.onRemoveExpense,
+    super.key,
   });
   final List<Expense> basketList;
   final void Function(Expense expense) onAddBasket;

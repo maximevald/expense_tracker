@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class ExpensesList extends StatelessWidget {
   const ExpensesList({
-    super.key,
     required this.expenses,
     required this.onRemoveExpense,
+    super.key,
   });
   final List<Expense> expenses;
   final void Function(Expense expense) onRemoveExpense;
@@ -19,7 +19,8 @@ class ExpensesList extends StatelessWidget {
         background: Container(
           color: Theme.of(context).colorScheme.error,
           margin: EdgeInsets.symmetric(
-              horizontal: Theme.of(context).cardTheme.margin!.horizontal),
+            horizontal: Theme.of(context).cardTheme.margin!.horizontal,
+          ),
           child: const Center(
             child: Text(
               'Remove',

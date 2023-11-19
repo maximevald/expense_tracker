@@ -1,10 +1,9 @@
+import 'package:expense_tracker/models/expense.dart';
+import 'package:expense_tracker/widgets/chart/chart_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'package:expense_tracker/widgets/chart/chart_bar.dart';
-import 'package:expense_tracker/models/expense.dart';
-
 class Chart extends StatelessWidget {
-  const Chart({super.key, required this.expenses});
+  const Chart({required this.expenses, super.key});
 
   final List<Expense> expenses;
 
@@ -49,7 +48,7 @@ class Chart extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Theme.of(context).colorScheme.primary.withOpacity(0.3),
-            Theme.of(context).colorScheme.primary.withOpacity(0.0)
+            Theme.of(context).colorScheme.primary.withOpacity(0),
           ],
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
@@ -71,7 +70,7 @@ class Chart extends StatelessWidget {
                         : (bucket.totalExpenses *
                             100 ~/
                             AllExpensesAmount(expenses: expenses).allAmount),
-                  )
+                  ),
               ],
             ),
           ),
@@ -94,7 +93,7 @@ class Chart extends StatelessWidget {
                   ),
                 ),
             ],
-          )
+          ),
         ],
       ),
     );
